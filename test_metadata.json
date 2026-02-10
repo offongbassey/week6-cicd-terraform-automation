@@ -1,0 +1,11 @@
+{
+  "fileName": "test.txt",
+  "bucketName": "lambda-serverless-uploads-150502622892",
+  "fileSize": 64,
+  "fileSizeReadable": "64.00 B",
+  "contentType": "text/plain",
+  "lastModified": "2026-02-05T13:52:57+00:00",
+  "etag": "\"2c2085a9e63ff82de826e278ac1310fb\"",
+  "uploadTime": "2026-02-05T13:52:58.290526",
+  "processedBy": "AWS Lambda"
+}

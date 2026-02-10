@@ -1,0 +1,23 @@
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+.terraform.lock.hcl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python files
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Lambda deployment package
+lambda-function/*.zip
+lambda-function/package/
+
+# Environment variables
+.env
