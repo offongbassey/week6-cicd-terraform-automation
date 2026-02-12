@@ -25,6 +25,28 @@ jobs:
       - name: Terraform Format Check
         run: terraform fmt -check
         continue-on-error: true
+
+      - name: Build Lambda Deployment Package
+        run: |
+          cd lambda-function
+    
+          # Install dependencies if requirements.txt exists
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt --target ./package --upgrade
+          fi
+    
+          # Create ZIP with dependencies
+          cd package
+          zip -r ../lambda_function.zip . -q
+          cd ..
+    
+          # Add Lambda function code to ZIP
+          zip -g lambda_function.zip lambda_function.py
+    
+          # Verify ZIP was created
+          ls -lh lambda_function.zip
+    
+          cd ..
       
       - name: Terraform Init
         run: terraform init
