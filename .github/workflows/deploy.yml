@@ -12,16 +12,16 @@ jobs:
   terraform:
     name: Terraform Deploy
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.6.0
-      
+
       - name: Terraform Format Check
         run: terraform fmt -check
         continue-on-error: true
@@ -29,34 +29,26 @@ jobs:
       - name: Build Lambda Deployment Package
         run: |
           cd lambda-function
-    
-          # Install dependencies if requirements.txt exists
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt --target ./package --upgrade
           fi
-    
-          # Create ZIP with dependencies
           cd package
           zip -r ../lambda_function.zip . -q
           cd ..
-    
-          # Add Lambda function code to ZIP
           zip -g lambda_function.zip lambda_function.py
-    
-          # Verify ZIP was created
           ls -lh lambda_function.zip
-    
           cd ..
-      
+
       - name: Terraform Init
         run: terraform init
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      
+          AWS_DEFAULT_REGION: eu-west-1
+
       - name: Terraform Validate
-        run: terraform 
-        
+        run: terraform validate
+
       - name: Debug AWS Auth
         run: aws sts get-caller-identity
         env:
@@ -71,10 +63,10 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-west-1
 
-      
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: eu-west-1
