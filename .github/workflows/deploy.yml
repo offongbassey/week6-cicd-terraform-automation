@@ -55,7 +55,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       
       - name: Terraform Validate
-        run: terraform - name: Debug AWS Auth
+        run: terraform 
         
       - name: Debug AWS Auth
         run: aws sts get-caller-identity
