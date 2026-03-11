@@ -5,6 +5,14 @@
 terraform {
   required_version = ">= 1.0"
 
+  # Store state in S3 so GitHub Actions and local computer share it!
+  backend "s3" {
+    bucket  = "terraform-state-week6-150502622892"  # ← CHANGE THIS!
+    key     = "week6/terraform.tfstate"
+    region  = "eu-west-1"
+    encrypt = true
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
